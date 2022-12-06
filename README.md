@@ -11,3 +11,9 @@ yarn add webpack webpack-cli source-map-loader babel-loader @babel/core @babel/p
 ```
 
 ## Add `webpack-config-base.js`, `webpack-config-client.js` and `webpack-config-sever.js`
+
+## Add React Router
+
+```sh
+yarn add react-router-dom -S
+```
