@@ -9,3 +9,5 @@ yarn add react react-dom -S
 
 yarn add webpack webpack-cli source-map-loader babel-loader @babel/core @babel/preset-env @babel/preset-react webpack-merge webpack-node-externals npm-run-all nodemon -D
 ```
+
+## Add `webpack-config-base.js`, `webpack-config-client.js` and `webpack-config-sever.js`
