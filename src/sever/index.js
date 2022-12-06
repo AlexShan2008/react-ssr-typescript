@@ -5,6 +5,8 @@ import Counter from "@/routes/Counter";
 const express = require("express");
 const app = express();
 
+app.use(express.static("public"));
+
 app.get("*", (req, res) => {
   const html = renderToString(<Counter />);
   res.send(`
@@ -18,6 +20,7 @@ app.get("*", (req, res) => {
   </head>
   <body>
     <div id='root'>${html}</div>
+    <script src='/client.js'></script/>
   </body>
   </html>
   `);
