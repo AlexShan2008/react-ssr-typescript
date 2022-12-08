@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
+import actionCreators from "@/store/actionCreators/counter";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function Counter(params) {
-  const [count, setCount] = useState(0);
+export default function Counter() {
+  const dispatch = useDispatch();
+  const number = useSelector((state) => state.counter.number);
+
   return (
     <div>
       Counter
-      <p>{count}</p>
-      <button onClick={() => setCount(count + 1)}>+</button>
+      <p>{number}</p>
+      <button onClick={() => dispatch(actionCreators.add())}>+</button>
     </div>
   );
 }

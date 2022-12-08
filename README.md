@@ -17,3 +17,9 @@ yarn add webpack webpack-cli source-map-loader babel-loader @babel/core @babel/p
 ```sh
 yarn add react-router-dom -S
 ```
+
+## Add Redux
+
+```sh
+yarn add redux react-redux redux-thunk redux-promise redux-logger -S
+```
