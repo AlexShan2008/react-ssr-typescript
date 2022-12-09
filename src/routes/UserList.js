@@ -1,4 +1,4 @@
-import React, { useEffect, userRef } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import actionCreators from "@/store/actionCreators/user";
 
@@ -21,3 +21,9 @@ export default function UserList() {
     </ul>
   );
 }
+
+// Fetch data on the sever side
+UserList.loadData = (store) => {
+  // When this request(Promise) finished, and then sent this HTML with data to client side.
+  return store.dispatch(actionCreators.getUserList());
+};

@@ -3,6 +3,9 @@ import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
 import App from "@/App";
 import proxy from "express-http-proxy";
+import { getStore } from "@/store";
+import { matchRoutes } from "react-router-dom";
+import routesConfig from "../routesConfig";
 
 const express = require("express");
 const app = express();
@@ -18,26 +21,43 @@ app.use(
 );
 
 app.get("*", (req, res) => {
-  const html = renderToString(
-    <StaticRouter>
-      <App />
-    </StaticRouter>
-  );
-  res.send(`
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSR</title>
-  </head>
-  <body>
-    <div id='root'>${html}</div>
-    <script src='/client.js'></script/>
-  </body>
-  </html>
-  `);
+  const routeMatches = matchRoutes(routesConfig, { pathname: req.url });
+  if (routeMatches) {
+    const store = getStore();
+    const loadDataPromises = routeMatches
+      .map((match) =>
+        match.route.element.type.loadData?.(store).then(
+          (data) => data,
+          (error) => error
+        )
+      )
+      .filter(Boolean);
+
+    Promise.all(loadDataPromises).then(() => {
+      const html = renderToString(
+        <StaticRouter>
+          <App store={store} />
+        </StaticRouter>
+      );
+      res.send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SSR</title>
+      </head>
+      <body>
+        <div id='root'>${html}</div>
+        <script src='/client.js'></script/>
+      </body>
+      </html>
+      `);
+    });
+  } else {
+    res.sendStatus(404);
+  }
 });
 
 app.listen(3000);
