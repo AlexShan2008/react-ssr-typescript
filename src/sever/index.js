@@ -2,11 +2,20 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
 import App from "@/App";
+import proxy from "express-http-proxy";
 
 const express = require("express");
 const app = express();
 
 app.use(express.static("public"));
+app.use(
+  "/api",
+  proxy("http://localhost:8000", {
+    proxyReqPathResolver(req) {
+      return `/api${req.url}`;
+    },
+  })
+);
 
 app.get("*", (req, res) => {
   const html = renderToString(

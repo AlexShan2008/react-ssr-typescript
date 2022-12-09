@@ -23,3 +23,9 @@ yarn add react-router-dom -S
 ```sh
 yarn add redux react-redux redux-thunk redux-promise redux-logger -S
 ```
+
+## express-http-proxy
+
+```sh
+yarn add express-http-proxy
+```
