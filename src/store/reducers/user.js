@@ -1,4 +1,4 @@
-import { SET_USER_LIST } from "../action-type";
+import { SET_USER_LIST, ADD_USER } from "../action-type";
 
 const initialState = {
   list: [],
@@ -9,6 +9,10 @@ function counter(state = initialState, action) {
     case SET_USER_LIST:
       return {
         list: action.payload,
+      };
+    case ADD_USER:
+      return {
+        list: [...state.list, action.payload],
       };
 
     default:
