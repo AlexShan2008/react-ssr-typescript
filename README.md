@@ -35,3 +35,9 @@ yarn add express-http-proxy
 ```sh
 yarn add express-session
 ```
+
+## Redux first history
+
+```sh
+yarn add redux-first-history
+```

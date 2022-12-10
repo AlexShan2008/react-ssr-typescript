@@ -5,7 +5,6 @@ import actionCreators from "@/store/actionCreators/auth";
 
 export default function Login() {
   const nameRef = useRef();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
@@ -15,7 +14,6 @@ export default function Login() {
     const user = { name };
 
     dispatch(actionCreators.login(user));
-    navigate("/profile");
   };
   return (
     <form onSubmit={handleSubmit}>

@@ -1,4 +1,5 @@
 import { LOGIN_ERROR, LOGIN_SUCCESS, LOGOUT_SUCCESS } from "../action-type";
+import { push } from "redux-first-history";
 
 const actionCreators = {
   login(user) {
@@ -11,6 +12,7 @@ const actionCreators = {
             type: LOGIN_SUCCESS,
             payload: data,
           });
+          dispatch(push("/profile"));
         } else {
           dispatch({
             type: LOGIN_ERROR,
@@ -29,6 +31,7 @@ const actionCreators = {
           dispatch({
             type: LOGOUT_SUCCESS,
           });
+          dispatch(push("/login"));
         }
       });
     };
