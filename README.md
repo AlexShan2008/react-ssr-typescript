@@ -29,3 +29,9 @@ yarn add redux react-redux redux-thunk redux-promise redux-logger -S
 ```sh
 yarn add express-http-proxy
 ```
+
+## session
+
+```sh
+yarn add express-session
+```

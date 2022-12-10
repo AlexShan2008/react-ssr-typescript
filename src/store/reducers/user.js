@@ -4,7 +4,7 @@ const initialState = {
   list: [],
 };
 
-function counter(state = initialState, action) {
+function user(state = initialState, action) {
   switch (action.type) {
     case SET_USER_LIST:
       return {
@@ -20,4 +20,4 @@ function counter(state = initialState, action) {
   }
 }
 
-export default counter;
+export default user;
