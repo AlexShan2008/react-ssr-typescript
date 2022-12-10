@@ -3,7 +3,7 @@ import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
 import App from "@/App";
 import proxy from "express-http-proxy";
-import { getStore } from "@/store";
+import { getSeverStore } from "@/store";
 import { matchRoutes } from "react-router-dom";
 import routesConfig from "../routesConfig";
 
@@ -23,7 +23,7 @@ app.use(
 app.get("*", (req, res) => {
   const routeMatches = matchRoutes(routesConfig, { pathname: req.url });
   if (routeMatches) {
-    const store = getStore();
+    const store = getSeverStore();
     const loadDataPromises = routeMatches
       .map((match) =>
         match.route.element.type.loadData?.(store).then(
@@ -50,6 +50,9 @@ app.get("*", (req, res) => {
       </head>
       <body>
         <div id='root'>${html}</div>
+        <script>
+        { var context = {state:${JSON.stringify(store.getState())} }}
+        </script/>
         <script src='/client.js'></script/>
       </body>
       </html>

@@ -7,16 +7,25 @@ import user from "./reducers/user";
 import clientRequest from "@/client/request";
 import severRequest from "@/sever/request";
 
-export function getStore() {
-  const reducers = {
-    counter,
-    user,
-  };
+const reducers = {
+  counter,
+  user,
+};
+const combinedReducers = combineReducers(reducers);
 
-  const combinedReducers = combineReducers(reducers);
-  const store = applyMiddleware(thunk, promise, logger)(createStore)(
-    combinedReducers
-  );
+export function getClientStore() {
+  const initialStore = window.context.state;
+  return applyMiddleware(
+    thunk.withExtraArgument(clientRequest),
+    promise,
+    logger
+  )(createStore)(combinedReducers, initialStore);
+}
 
-  return store;
+export function getSeverStore() {
+  return applyMiddleware(
+    thunk.withExtraArgument(severRequest),
+    promise,
+    logger
+  )(createStore)(combinedReducers);
 }
