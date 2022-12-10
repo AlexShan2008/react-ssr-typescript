@@ -35,7 +35,7 @@ app.get("*", (req, res) => {
 
     Promise.all(loadDataPromises).then(() => {
       const html = renderToString(
-        <StaticRouter>
+        <StaticRouter location={req.url}>
           <App store={store} />
         </StaticRouter>
       );
