@@ -55,6 +55,12 @@ app.get("*", (req, res) => {
           </StaticRouter>
         </StyleContext.Provider>
       );
+
+      let styles = "";
+      if (css.size > 0) {
+        styles = `\n<style>${[...css].join("")}</style>`;
+      }
+
       res.send(`
       <!DOCTYPE html>
       <html lang="en">
@@ -62,8 +68,7 @@ app.get("*", (req, res) => {
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>SSR</title>
-        <style>${[...css].join("")}</style>
+        <title>SSR</title>${styles}
       </head>
       <body>
         <div id='root'>${html}</div>
