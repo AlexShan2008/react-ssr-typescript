@@ -47,7 +47,7 @@ app.get("/api/logout", (req, res) => {
     success: true,
   });
 });
-app.post("/api/validate", (req, res) => {
+app.get("/api/validate", (req, res) => {
   const user = req.session.user;
   if (user) {
     res.json({

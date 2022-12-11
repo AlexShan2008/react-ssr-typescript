@@ -41,7 +41,7 @@ export function getClientStore() {
   };
 }
 
-export function getSeverStore() {
+export function getSeverStore(req) {
   const { createReduxHistory, routerMiddleware, routerReducer } =
     createReduxHistoryContext({
       history: createMemoryHistory(),
@@ -58,7 +58,7 @@ export function getSeverStore() {
   const combinedReducers = combineReducers(reducers);
 
   const store = applyMiddleware(
-    thunk.withExtraArgument(severRequest),
+    thunk.withExtraArgument(severRequest(req)),
     promise,
     routerMiddleware,
     logger

@@ -36,6 +36,19 @@ const actionCreators = {
       });
     };
   },
+  validate() {
+    return function (dispatch, getState, request) {
+      return request.get(`/api/validate`).then((response) => {
+        const { success, data } = response.data;
+        if (success) {
+          dispatch({
+            type: LOGIN_SUCCESS,
+            payload: data,
+          });
+        }
+      });
+    };
+  },
 };
 
 export default actionCreators;

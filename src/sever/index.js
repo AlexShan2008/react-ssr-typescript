@@ -23,7 +23,7 @@ app.use(
 app.get("*", (req, res) => {
   const routeMatches = matchRoutes(routesConfig, { pathname: req.url });
   if (routeMatches) {
-    const { store } = getSeverStore();
+    const { store } = getSeverStore(req);
     const loadDataPromises = routeMatches
       .map((match) =>
         match.route.element.type.loadData?.(store).then(
@@ -31,6 +31,7 @@ app.get("*", (req, res) => {
           (error) => error
         )
       )
+      .concat(App.loadData?.(store))
       .filter(Boolean);
 
     Promise.all(loadDataPromises).then(() => {
