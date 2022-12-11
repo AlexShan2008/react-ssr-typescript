@@ -7,6 +7,7 @@ import { getSeverStore } from "@/store";
 import { matchRoutes } from "react-router-dom";
 import routesConfig from "../routesConfig";
 import StyleContext from "isomorphic-style-loader-react18/StyleContext";
+import { Helmet } from "react-helmet";
 
 const express = require("express");
 const app = express();
@@ -48,6 +49,8 @@ app.get("*", (req, res) => {
         });
       };
 
+      const helmet = Helmet.renderStatic();
+
       const html = renderToString(
         <StyleContext.Provider value={{ insertCss }}>
           <StaticRouter location={req.url}>
@@ -68,7 +71,9 @@ app.get("*", (req, res) => {
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>SSR</title>${styles}
+        ${helmet.title.toString()}
+        ${helmet.meta.toString()}
+        ${styles}
       </head>
       <body>
         <div id='root'>${html}</div>

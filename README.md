@@ -41,3 +41,9 @@ yarn add express-session
 ```sh
 yarn add redux-first-history
 ```
+
+## SEO support
+
+```sh
+yarn add react-helmet
+```
