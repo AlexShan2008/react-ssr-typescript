@@ -6,6 +6,7 @@ import proxy from "express-http-proxy";
 import { getSeverStore } from "@/store";
 import { matchRoutes } from "react-router-dom";
 import routesConfig from "../routesConfig";
+import StyleContext from "isomorphic-style-loader-react18/StyleContext";
 
 const express = require("express");
 const app = express();
@@ -40,11 +41,19 @@ app.get("*", (req, res) => {
       } else if (routeMatches[routeMatches.length - 1].route.path === "*") {
         res.statusCode = 404;
       }
+      const css = new Set();
+      const insertCss = (...styles) => {
+        styles.forEach((style) => {
+          css.add(style._getCss());
+        });
+      };
 
       const html = renderToString(
-        <StaticRouter location={req.url}>
-          <App store={store} />
-        </StaticRouter>
+        <StyleContext.Provider value={{ insertCss }}>
+          <StaticRouter location={req.url}>
+            <App store={store} />
+          </StaticRouter>
+        </StyleContext.Provider>
       );
       res.send(`
       <!DOCTYPE html>
@@ -54,6 +63,7 @@ app.get("*", (req, res) => {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>SSR</title>
+        <style>${[...css].join("")}</style>
       </head>
       <body>
         <div id='root'>${html}</div>

@@ -24,6 +24,21 @@ module.exports = {
         },
         exclude: /node_modules/,
       },
+      {
+        test: /\.css$/,
+        use: [
+          "isomorphic-style-loader-react18",
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                mode: "local",
+                localIdentName: "[path][name]_[local]",
+              },
+            },
+          },
+        ],
+      },
     ],
   },
 };
