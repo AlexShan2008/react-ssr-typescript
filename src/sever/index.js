@@ -1,5 +1,5 @@
 import React from "react";
-import { renderToString } from "react-dom/server";
+import { renderToPipeableStream } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
 import App from "@/App";
 import proxy from "express-http-proxy";
@@ -50,40 +50,50 @@ app.get("*", (req, res) => {
       };
 
       const helmet = Helmet.renderStatic();
-
-      const html = renderToString(
+      const { pipe } = renderToPipeableStream(
         <StyleContext.Provider value={{ insertCss }}>
           <StaticRouter location={req.url}>
             <App store={store} />
           </StaticRouter>
-        </StyleContext.Provider>
+        </StyleContext.Provider>,
+        {
+          // bootstrapScripts: ["/client.js"],
+          onShellReady() {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "text/html;charset:utf8");
+
+            let styles = "";
+            if (css.size > 0) {
+              styles = `\n<style>${[...css].join("")}</style>`;
+            }
+
+            res.write(`
+              <!DOCTYPE html>
+              <html lang="en">
+              <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                ${helmet.title.toString()}
+                ${helmet.meta.toString()}
+                ${styles}
+              </head>
+              <body>
+                <div id='root'>
+            `);
+            pipe(res);
+            res.write(`
+                </div>
+                <script>
+                { var context = {state:${JSON.stringify(store.getState())} }}
+                </script/>
+                <script src="/client.js"></script>
+              </body>
+              </html>
+            `);
+          },
+        }
       );
-
-      let styles = "";
-      if (css.size > 0) {
-        styles = `\n<style>${[...css].join("")}</style>`;
-      }
-
-      res.send(`
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        ${helmet.title.toString()}
-        ${helmet.meta.toString()}
-        ${styles}
-      </head>
-      <body>
-        <div id='root'>${html}</div>
-        <script>
-        { var context = {state:${JSON.stringify(store.getState())} }}
-        </script/>
-        <script src='/client.js'></script/>
-      </body>
-      </html>
-      `);
     });
   } else {
     res.sendStatus(404);

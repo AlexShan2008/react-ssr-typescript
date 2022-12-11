@@ -1,29 +1,50 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { lazy, Suspense, useRef } from "react";
+import { useDispatch } from "react-redux";
 import actionCreators from "@/store/actionCreators/user";
+
+const LazyUsers = lazy(() => import("@/components/Users"));
 
 export default function UserList() {
   const dispatch = useDispatch();
-  const list = useSelector((state) => {
-    return state.user.list;
-  });
+  const resourceRef = useRef();
 
-  useEffect(() => {
-    if (list.length === 0) {
-      dispatch(actionCreators.getUserList());
-    }
-  }, [list]);
+  if (!resourceRef.current) {
+    const promise = dispatch(actionCreators.getUserList());
+    const resource = wrapPromise(promise);
+    resourceRef.current = resource;
+  }
+
   return (
-    <ul>
-      {list.map(({ id, name }) => (
-        <li key={id}>{name}</li>
-      ))}
-    </ul>
+    <Suspense fallback={<div>Loading user list ...</div>}>
+      <LazyUsers resource={resourceRef.current} />
+    </Suspense>
   );
 }
 
-// Fetch data on the sever side
-UserList.loadData = (store) => {
-  // When this request(Promise) finished, and then sent this HTML with data to client side.
-  return store.dispatch(actionCreators.getUserList());
-};
+function wrapPromise(promise) {
+  let status = "pending";
+  let result;
+
+  let suspender = promise.then(
+    (r) => {
+      status = "success";
+      result = r;
+    },
+    (error) => {
+      status = "error";
+      result = error;
+    }
+  );
+
+  return {
+    read() {
+      if (status === "pending") {
+        throw suspender;
+      } else if (status === "error") {
+        throw result;
+      } else if (status === "success") {
+        return result;
+      }
+    },
+  };
+}
