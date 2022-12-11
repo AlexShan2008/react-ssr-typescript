@@ -79,8 +79,7 @@ app.get("*", (req, res) => {
                 ${styles}
               </head>
               <body>
-                <div id='root'>
-            `);
+                <div id='root'>`);
             pipe(res);
             res.write(`
                 </div>
