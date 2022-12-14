@@ -5,6 +5,7 @@ module.exports = {
   mode: "development",
   devtool: false,
   resolve: {
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
     alias: {
       "@": path.resolve(__dirname, "../../src"),
     },

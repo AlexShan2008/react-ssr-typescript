@@ -2,7 +2,7 @@ import React from "react";
 import { hydrateRoot } from "react-dom/client";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
 import App from "@/App";
-import { getClientStore } from "../store";
+import { getClientStore } from "@/store";
 import StyleContext from "isomorphic-style-loader-react18/StyleContext";
 
 const root = document.getElementById("root");
