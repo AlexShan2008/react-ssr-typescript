@@ -5,10 +5,10 @@ const webpackNodeExternals = require("webpack-node-externals");
 
 module.exports = merge(base, {
   target: "node",
-  entry: "./src/sever/index.js",
+  entry: path.resolve(__dirname, "../../src/sever/index.js"),
   externals: [webpackNodeExternals()],
   output: {
-    path: path.resolve("build"),
+    path: path.resolve(__dirname, "../../build"),
     filename: "sever.js",
   },
 });

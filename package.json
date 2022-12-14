@@ -8,8 +8,8 @@
   "scripts": {
     "start": "nodemon build/sever.js",
     "build": "npm-run-all --parallel build:**",
-    "build:sever": "webpack --config webpack-config-sever.js --watch",
-    "build:client": "webpack --config webpack-config-client.js --watch"
+    "build:sever": "webpack --config scripts/webpack/webpack-config-sever.js --watch",
+    "build:client": "webpack --config scripts/webpack/webpack-config-client.js --watch"
   },
   "dependencies": {
     "axios": "^1.2.1",
