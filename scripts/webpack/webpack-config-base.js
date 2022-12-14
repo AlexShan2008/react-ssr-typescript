@@ -1,4 +1,6 @@
 const path = require("path");
+const typescriptRule = require("./rules/typescript.rule");
+
 module.exports = {
   mode: "development",
   devtool: false,
@@ -24,6 +26,7 @@ module.exports = {
         },
         exclude: /node_modules/,
       },
+      typescriptRule,
       {
         test: /\.css$/,
         use: [
