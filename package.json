@@ -9,7 +9,8 @@
     "start": "nodemon build/sever.js",
     "build": "npm-run-all --parallel build:**",
     "build:sever": "webpack --config scripts/webpack/webpack-config-sever.js --watch",
-    "build:client": "webpack --config scripts/webpack/webpack-config-client.js --watch"
+    "build:client": "webpack --config scripts/webpack/webpack-config-client.js --watch",
+    "eslint": "eslint src/**/*"
   },
   "dependencies": {
     "axios": "^1.2.1",
@@ -26,7 +27,8 @@
     "redux-first-history": "^5.1.1",
     "redux-logger": "^3.0.6",
     "redux-promise": "^0.6.0",
-    "redux-thunk": "^2.4.2"
+    "redux-thunk": "^2.4.2",
+    "typescript": "^4.9.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
@@ -37,13 +39,9 @@
     "@types/react-dom": "^18.0.9",
     "@types/redux-logger": "^3.0.9",
     "@types/redux-promise": "^0.5.29",
-    "@typescript-eslint/eslint-plugin": "^5.46.1",
-    "@typescript-eslint/parser": "^5.46.1",
     "babel-loader": "^9.1.0",
     "cors": "^2.8.5",
     "css-loader": "^6.7.2",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^17.0.0",
     "isomorphic-style-loader-react18": "^5.9.2",
     "nodemon": "^2.0.20",
     "npm-run-all": "^4.1.5",
